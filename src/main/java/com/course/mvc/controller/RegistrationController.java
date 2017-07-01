@@ -22,36 +22,33 @@ import java.util.stream.Collectors;
  */
 @Controller
 public class RegistrationController {
+
     private LoginService loginService;
     @Autowired
     public RegistrationController(LoginService loginService){
         this.loginService=loginService;
     }
 
-    @RequestMapping(value = "/registration",method = RequestMethod.GET,name="registrationUser")
+    @RequestMapping(value = "/registration",method = RequestMethod.GET, name = "registrationUser")
     public String registrationUser(Model model){
         if (!model.containsAttribute("user")) {
             model.addAttribute("user", new ChatUserDto());
         }
         return "registration";
     }
-    public ModelAndView registrationUser(@ModelAttribute ("user")ChatUserDto userDto){
-        ModelAndView modelAndView=new ModelAndView();
-        modelAndView.addObject("registrationHandler","registration");
-        modelAndView.setViewName("registration");
-        return modelAndView;
-    }
+
     @RequestMapping(value = "/registration",method = RequestMethod.POST)
-    public String saveUser(@ModelAttribute("user")@Validated ChatUserDto userDto,
+    public String saveUser(@Validated @ModelAttribute("user") ChatUserDto chatUserDto,
                            BindingResult result, RedirectAttributes attributes){
         if(result.hasErrors()){
             attributes.addFlashAttribute("org.springframework.validation.BindingResult.user",result);
-            userDto.setPassword("");
-            attributes.addFlashAttribute("user", userDto);//живут только до следующего запроса
+            chatUserDto.setPassword("");
+            attributes.addFlashAttribute("user",chatUserDto);
             return "redirect:/registration";
         }
         System.out.println("IN_SAVE_REGISTRATION");
-       loginService.save(userDto);
+        loginService.save(chatUserDto);
         return "redirect:/";
     }
+
 }

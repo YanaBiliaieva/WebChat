@@ -1,6 +1,9 @@
 package com.course.mvc.domain;
 
 
+import org.hibernate.annotations.ColumnDefault;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
@@ -24,6 +27,8 @@ public class Message {
     private ChatUser receiver;
     @Column
 //    @Temporal(TemporalType.TIMESTAMP)
+
+    @DateTimeFormat
     private LocalDateTime date;
 
     public Long getId() {

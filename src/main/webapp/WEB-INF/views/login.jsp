@@ -1,17 +1,23 @@
-<%@ page contentType="text/html; charset=UTF-8"%>
+<%@ page contentType="text/html;charset=UTF-8"%>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <html>
+
+<head>
+    <link href="./static/css/cssfile.css" rel="stylesheet">
+</head>
+
 <body>
-<h1>Welcome to login page</h1>
-${error}
+<h1>Welcome to login page!</h1>
+
+<div class="error">
+    ${error}
+</div>
+
 <form action="${loginHandler}" method="post">
-    login:<input typpe="text" name="login" placeholder="enter login here"/>
-    <br>
-    password: <input typpe="text" name="password" placeholder="enter password here"/>
-</br>
-    <br> <input type="submit" value="Send"/>
+    login: <input type="text" name="login" placeholder="login here"/></br>
+    password: <input type="password" name="password" placeholder="password here"/></br>
+    <input type="submit" value="Send"/>
 </form>
-<a href="${spring:mvcUrl('registrationUser')}">Registration</a>
-<a href="${spring:mvcUrl('loginUser')}">Login</a>
+
 </body>
 </html>

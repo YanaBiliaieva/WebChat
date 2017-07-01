@@ -14,20 +14,25 @@ import java.util.Objects;
  * Created by Admin on 10.06.2017.
  */
 @Controller
-
 public class ChatController {
+
     @Autowired
     Environment environment;
 
-    @RequestMapping(value = "/chat", method = RequestMethod.GET)
+    @RequestMapping(value = "/chat",method = RequestMethod.GET)
     public ModelAndView getChatPage(HttpSession session){
-        ModelAndView modelAndView=new ModelAndView();
+
+        ModelAndView modelAndView = new ModelAndView();
 
         if(Objects.nonNull(session.getAttribute("user"))){
+            System.out.println("IN CHAT USER CONTROLLER!! " +session.getAttribute("user") );
             modelAndView.addObject("sockUrl",environment.getProperty("socket.url"));
             modelAndView.setViewName("chat");
         }else {
+            System.out.println("ELSE!! " + session.getAttribute("user"));
             modelAndView.setViewName("index");
-        }return modelAndView;
+        }
+        return modelAndView;
     }
+
 }

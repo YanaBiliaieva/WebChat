@@ -7,11 +7,9 @@ import com.course.mvc.repository.MessageRepository;
 import com.course.mvc.service.WebSocketService;
 import com.course.mvc.service.redis.RedisDao;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import sun.misc.resources.Messages;
-
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,17 +20,12 @@ import java.util.stream.Collectors;
  */
 @Service
 public class WebSocketServiceImpl implements WebSocketService {
-   // @Autowired
-    //@Qualifier(value = "mymessageUserRepository")
+
     private MessageRepository messageRepository;
-   // @Autowired
-   // @Qualifier(value = "mychatUserRepository")
     private ChatUserRepository chatUserRepository;
-   // @Autowired
     private RedisDao redisDao;
 
     @Autowired
-
     public WebSocketServiceImpl(MessageRepository messageRepository, ChatUserRepository chatUserRepository, RedisDao redisDao) {
         this.messageRepository = messageRepository;
         this.chatUserRepository = chatUserRepository;
@@ -43,6 +36,7 @@ public class WebSocketServiceImpl implements WebSocketService {
     public void saveBroadcastMessage(String broadcastMessage, String senderLogin) {
         String value = senderLogin + ":" + broadcastMessage;
         redisDao.saveDataByKey("broadcast", value);
+//        System.out.println("AFTER SAVE BROADCAST MESSAGE");
     }
 
     @Override
@@ -74,8 +68,8 @@ public class WebSocketServiceImpl implements WebSocketService {
         ChatUser sender = chatUserRepository.findChatUserByLogin(senderLogin);
         ChatUser receiver = chatUserRepository.findChatUserByLogin(receiverLogin);
         message.setSender(sender);
+        message.setDate(LocalDateTime.now());
         message.setReceiver(receiver);
         messageRepository.save(message);
     }
-
 }

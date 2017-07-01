@@ -15,9 +15,35 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * Created by Admin on 27.05.2017.
  */
-@ControllerAdvice //типичный аспект
+@ControllerAdvice
 public class AspectExceptionHandler {
-    //все, что касается побочной ветки
+
+    /**
+     * Не используем редирект
+     *
+     * @param exception
+     * @return
+     */
+//    @ExceptionHandler(ServiceException.class)
+//    public ModelAndView handleServiceException(Exception exception) {
+//        ModelAndView mav = new ModelAndView();
+//        mav.addObject("error", exception.getMessage());
+//        mav.addObject("user", new ChatUserDto());
+//        mav.setViewName("registration");
+//        return mav;
+//    }
+
+    /**
+     * For each Spring controller we can simply define a method that automatically gets called if a given exception occurs.
+     * Thus whenever an ServiceException is raised from any controller method will call the above method handleServiceException().
+     * We mapped ServiceException.class to this method using @ExceptionHandler annotation.
+     *
+     * Используем редирект
+     *
+     * @param exception
+     * @param request
+     * @return
+     */
     @ExceptionHandler(ServiceException.class)
     public RedirectView handleServiceException(ServiceException exception, HttpServletRequest request) {
         RedirectView rw = new RedirectView("./registration");
@@ -29,5 +55,13 @@ public class AspectExceptionHandler {
         }
         return rw;
     }
-    //TODO change server exception via httpsesssion
+
+    @ExceptionHandler(Exception.class)
+    public String handleException(Exception ex){
+        ex.printStackTrace();
+        return "/index";
+    }
+
+    //TODO Change handleServiceException via HttpSession
+
 }

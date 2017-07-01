@@ -11,6 +11,7 @@ import java.util.List;
 @Entity
 @Table(name = "chatuser")
 public class ChatUser {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -22,9 +23,9 @@ public class ChatUser {
     private String password;
     @ManyToOne(fetch = FetchType.EAGER)
     private Role role;
-    @OneToMany(mappedBy = "sender",fetch = FetchType.LAZY, orphanRemoval = true)
+    @OneToMany(mappedBy = "sender",fetch = FetchType.LAZY,orphanRemoval = true)
     private List<Message> sendMessages;
-    @OneToMany(mappedBy = "receiver",fetch = FetchType.LAZY, orphanRemoval = true)
+    @OneToMany(mappedBy = "receiver",fetch = FetchType.LAZY,orphanRemoval = true)
     private List<Message> receiveMessages;
 
     public static class Builder{
@@ -43,7 +44,7 @@ public class ChatUser {
             chatUser.setPassword(userDto.getPassword());
             return this;
         }
-        public  Builder setRole(Role role){
+        public Builder setRole(Role role){
             chatUser.setRole(role);
             return this;
         }
@@ -51,6 +52,7 @@ public class ChatUser {
             return chatUser;
         }
     }
+
     public Long getId() {
         return id;
     }
@@ -89,5 +91,15 @@ public class ChatUser {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    @Override
+    public String toString() {
+        return "ChatUser{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", login='" + login + '\'' +
+                ", password='" + password + '\'' +
+                '}';
     }
 }
